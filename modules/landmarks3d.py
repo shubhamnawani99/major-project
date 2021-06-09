@@ -1,9 +1,7 @@
 import face_alignment
 import numpy as np
 
-# original
-# fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._3D, flip_input=False, face_detector='dlib')
-
+# face_alignment library for 3d landmark detection
 fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._3D, flip_input=False)
 
 
@@ -19,6 +17,7 @@ def calculate_attention(vector):
 
 # calculate the orientation vector
 def calculate_vector(key_points):
+    # calculate the mean position of all the landmark (x,y) co-ordinates
     mean_pos = np.mean(key_points, 0)
     nose_pos = (key_points[31] + key_points[34]) / 2
     orientation_diff = nose_pos - mean_pos

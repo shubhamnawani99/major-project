@@ -1,8 +1,8 @@
 # import the necessary libraries
 import cv2
 
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+face_cascade = cv2.CascadeClassifier('../resources/haarcascade/haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier('../resources/haarcascade/haarcascade_eye.xml')
 
 # open a capture window using the VideoCapture() method
 cap = cv2.VideoCapture(0)

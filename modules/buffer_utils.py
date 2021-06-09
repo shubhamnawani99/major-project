@@ -4,6 +4,7 @@ from functools import partial
 
 import Levenshtein
 
+
 # Buffer class to store all the attribute of users
 class Buffer:
     def __init__(self, MAX_FRAMES=20):

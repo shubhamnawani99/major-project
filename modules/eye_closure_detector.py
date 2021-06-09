@@ -21,7 +21,7 @@ EYE_FRAMES = 48
 # and the PATH for the landmarks
 COUNTER = 0
 ALARM_ON = False
-PATH = "data/shape_predictor_68_face_landmarks.dat"
+PATH = "../data/shape_predictor_68_face_landmarks.dat"
 
 
 # method to display the ALERT

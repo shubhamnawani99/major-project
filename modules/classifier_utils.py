@@ -15,7 +15,7 @@ class AttentionClass(Enum):
 
 # Threshold values
 NOD_THRESHOLD = 5
-YAWN_THRESHOLD = 3
+YAWN_THRESHOLD = 2
 
 
 # module to classify the person
@@ -38,12 +38,12 @@ def classify(buffer):
         mean_orientation_score = np.mean(buffer.orientation_scores[name]) if len(
             buffer.orientation_scores[name]) != 0 else 0.5
 
-        # mean orientation is greater than 0.6
-        if mean_orientation_score >= 0.6:
+        # mean orientation is greater than 0.7
+        if mean_orientation_score >= 0.7:
 
             # a person is INTERACTIVE if they nod more than the given threshold
             # or have active lip movement
-            if mean_var > 100 or sum(buffer.nods[name]) >= NOD_THRESHOLD:
+            if mean_var > 93 or sum(buffer.nods[name]) >= NOD_THRESHOLD:
                 classes[name] = AttentionClass.INTERACTIVE
                 print("{} : INTERACTIVE".format(name))
 
@@ -54,7 +54,7 @@ def classify(buffer):
 
         else:
             # a person is DROWSY if they have yawns more than the threshold
-            if sum(buffer.yawns[name]) >= 3:
+            if sum(buffer.yawns[name]) >= YAWN_THRESHOLD:
                 classes[name] = AttentionClass.DROWSY
                 print("{} : DROWSY".format(name))
             else:

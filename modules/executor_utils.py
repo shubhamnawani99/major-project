@@ -1,7 +1,7 @@
-from extract_name import extract_name_from_frame
+from extract_names import extract_name_from_frame
 from landmarks3d import get_face_keypoints, calculate_attention, calculate_vector
-from lip_var import get_lip_dist, get_lip_variance
-from nodding import isNodding
+from lip_variance_utils import get_lip_dist, get_lip_variance
+from nod_utils import is_nodding
 from yawn import isYawn
 
 
@@ -35,7 +35,7 @@ def process_and_upload(frame, buffer):
 
         # Secondary Calculations
         variance = get_lip_variance(buffer.lip_distances[name])
-        nod = isNodding(buffer.orientation_vectors[name])
+        nod = is_nodding(buffer.orientation_vectors[name])
 
         # Add Secondary Values to the Buffer
         buffer.add_variance(name, variance)

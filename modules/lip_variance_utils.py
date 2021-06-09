@@ -14,6 +14,7 @@ import numpy as np
 
 def get_total_dist(mouth):
     mean_pos = np.sum(mouth, axis=0) / 12
+    # get (x, y) co-ordinates of the lip landmarks
     mean_pos = mean_pos[0:2]
     upper_lip = mouth[3][0:2]
     lower_lip = mouth[9][0:2]
