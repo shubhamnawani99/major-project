@@ -59,7 +59,8 @@ while True:
     ret, frame = cap.read()
 
     # show the video frame
-    cv2.imshow('Attention span detection demo', frame)
+    show_frame = cv2.resize(frame, (960, 540))  # Resize image
+    cv2.imshow('Attention span detection demo', show_frame)
     k = cv2.waitKey(1)
     if k == ord("q"):
         exit(1)

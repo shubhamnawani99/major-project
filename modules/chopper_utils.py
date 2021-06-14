@@ -65,12 +65,6 @@ slices = {
 }
 
 
-# show the images
-def show_images(images):
-    for i, image in enumerate(images):
-        cv2.imshow('image{}'.format(i), image)
-
-
 def chop_into(frame, n):
     cur_slices = slices[n]
     rets = []

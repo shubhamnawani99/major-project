@@ -2,7 +2,7 @@ from extract_names import extract_name_from_frame
 from landmarks3d import get_face_keypoints, calculate_attention, calculate_vector
 from lip_variance_utils import get_lip_dist, get_lip_variance
 from nod_utils import is_nodding
-from yawn import isYawn
+from yawn import is_yawning
 
 
 # process the images and upload in the buffer
@@ -25,7 +25,7 @@ def process_and_upload(frame, buffer):
         cur_vector = calculate_vector(landmarks)
         cur_orientation = calculate_attention(cur_vector)
         dist = get_lip_dist(landmarks)
-        yawn = isYawn(landmarks)
+        yawn = is_yawning(landmarks)
 
         # Add Primary Values to the Buffer
         buffer.add_lip_dist(name, dist)
