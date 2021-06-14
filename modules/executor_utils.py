@@ -2,7 +2,7 @@ from extract_names import extract_name_from_frame
 from landmarks3d import get_face_keypoints, calculate_attention, calculate_vector
 from lip_variance_utils import get_lip_dist, get_lip_variance
 from nod_utils import is_nodding
-from yawn import is_yawning
+from multi_yawn import is_yawning
 
 
 # process the images and upload in the buffer
