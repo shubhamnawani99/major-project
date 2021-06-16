@@ -11,12 +11,9 @@ def is_yawning(kps):
 
     euclidian_ratio_3d = is_yawing_euclidian(top, left, bottom, right)
 
-    print('Ratio: ', euclidian_ratio_3d)
+    # print('Ratio: ', euclidian_ratio_3d)
 
-    if euclidian_ratio_3d >= 0.9:
-        return True
-    else:
-        return False
+    return euclidian_ratio_3d >= 0.9
 
 
 def is_yawing_euclidian(top, left, bottom, right) -> float:

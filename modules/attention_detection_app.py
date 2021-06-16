@@ -45,7 +45,7 @@ buffer = Buffer()
 frame = None
 return_values = Queue()
 
-cap = cv2.VideoCapture("../resources/TestCall.mp4")
+cap = cv2.VideoCapture("../resources/college_test_call_final.mp4")
 
 # define the main processing thread
 processing_thread = Thread(target=process_frame)
@@ -57,6 +57,10 @@ while True:
 
     # read from the video capture
     ret, frame = cap.read()
+
+    # break if frame not available
+    if not ret:
+        break
 
     # show the video frame
     show_frame = cv2.resize(frame, (960, 540))  # Resize image

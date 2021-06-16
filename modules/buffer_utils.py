@@ -7,13 +7,14 @@ import Levenshtein
 
 # Buffer class to store all the attribute of users
 class Buffer:
-    def __init__(self, MAX_FRAMES=20):
+    def __init__(self, MAX_FRAMES=10):
         self.MAX_FRAMES = MAX_FRAMES
         self.lip_distances = defaultdict(partial(deque, maxlen=MAX_FRAMES))
         self.orientation_vectors = defaultdict(partial(deque, maxlen=MAX_FRAMES))
         self.orientation_scores = defaultdict(partial(deque, maxlen=MAX_FRAMES))
         self.lip_variances = defaultdict(partial(deque, maxlen=MAX_FRAMES))
         self.yawns = defaultdict(partial(deque, maxlen=MAX_FRAMES))
+        self.eyes = defaultdict(partial(deque, maxlen=MAX_FRAMES))
         self.nods = defaultdict(partial(deque, maxlen=MAX_FRAMES))
         self.presences = defaultdict(partial(deque, maxlen=MAX_FRAMES))
         self.attention_scores = defaultdict(partial(deque, maxlen=MAX_FRAMES))
@@ -39,6 +40,13 @@ class Buffer:
 
     def add_yawn(self, name, yawn):
         self.yawns[name].append(yawn)
+
+    def add_eye(self, name, eye):
+        self.eyes[name].append(eye)
+
+    def add_initial_values(self, name):
+        [self.eyes[name].append(1) for _ in range(7)]
+        [self.yawns[name].append(0) for _ in range(7)]
 
     def add_nod(self, name, nod):
         self.nods[name].append(nod)
