@@ -5,7 +5,6 @@ from queue import Queue
 from threading import Thread
 
 import cv2
-import matplotlib.pyplot as plt
 
 from buffer_utils import Buffer
 from chopper_utils import chop
@@ -38,6 +37,7 @@ def process_frame():
     # if person not in the current frame,
     # assign false in the presence dict
     buffer.set_presences()
+    print()
 
 
 # define the frame, buffer and return values
@@ -45,7 +45,8 @@ buffer = Buffer()
 frame = None
 return_values = Queue()
 
-cap = cv2.VideoCapture("../resources/college_test_call_final.mp4")
+# cap = cv2.VideoCapture("../resources/dark_subs720.mp4")
+cap = cv2.VideoCapture("../resources/TestCall.mp4")
 
 # define the main processing thread
 processing_thread = Thread(target=process_frame)
@@ -60,12 +61,13 @@ while True:
 
     # break if frame not available
     if not ret:
+        print('=============END==================')
         break
 
     # show the video frame
     show_frame = cv2.resize(frame, (960, 540))  # Resize image
     cv2.imshow('Attention span detection demo', show_frame)
-    k = cv2.waitKey(1)
+    k = cv2.waitKey(15)
     if k == ord("q"):
         exit(1)
 

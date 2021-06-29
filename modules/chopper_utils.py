@@ -75,15 +75,25 @@ def chop_into(frame, n):
 
 # main chop function
 def chop(full_frame):
+
+    # remove the black border from the full frame
     frame_color = full_frame[15:-15, 15:-15]
+
     # resize the frame into the FRAME_SIZE
     frame_color = cv2.resize(frame_color, FRAME_SIZE)
+
     # Convert to grayscale
     frame = cv2.cvtColor(frame_color, cv2.COLOR_BGR2GRAY)
+
     # determine the edges
     canny = cv2.Canny(frame, 50, 150, apertureSize=3)
+
     # apply the canny with the permutation filters
-    confs = [np.sum(cv2.bitwise_and(img, canny)) for img in nums]
-    max_index = np.argmax(confs) + 6
-    imgs = chop_into(frame_color, max_index)
-    return imgs
+    confidence = [np.sum(cv2.bitwise_and(img, canny)) for img in nums]
+    max_index = np.argmax(confidence) + 6
+
+    # chop the whole frame into smaller frames
+    # each frame consisting of 1 participant
+    chopped_frames = chop_into(frame_color, max_index)
+
+    return chopped_frames

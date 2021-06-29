@@ -16,41 +16,40 @@ def prepare(frame):
 
 # perform threshold
 def threshold(frame):
-    # set element to black (0) if it lies below 180 or more than 255
-    thresh = cv2.inRange(frame, (180, 180, 180), (255, 255, 255))
+    x = 180
+    thresh = cv2.inRange(frame, (x, x, x), (255, 255, 255))
     # inverse color
     thresh = 255 - thresh
     return thresh
 
 
-def crop2(binary):
-    D = 10
-    max_col_intensity = np.max(binary, 0)
+def crop2(bin):
+    D = 69
+    colmaxas = np.max(bin, 0)
     b = 0
     rightmost = True
-    for i in range(len(max_col_intensity)):
-        # 0 -> pure black
-        if max_col_intensity[i] != 0:
+    for i in range(len(colmaxas)):
+        if colmaxas[i] != 0:
             b = 0
         else:
             b += 1
         if b > D:
             rightmost = False
             break
-
     r = i if rightmost else i - D + int(D / 2)
 
-    binary = binary[:, 0:r]
-    max_row_intensity = np.max(binary, 1)
+    bin = bin[:, 0:r]
+    rowmaxs = np.max(bin, 1)
     start = -1
     end = -1
-    for j, v in enumerate(max_row_intensity):
+    for j, v in enumerate(rowmaxs):
         if v == 255 and start == -1:
             start = j
         if v == 0 and start != -1:
             end = j
             break
-
+    # print('l: ', len(colmaxas))
+    # print("r: ", r)
     return start, end, r
 
 
@@ -59,7 +58,6 @@ def extract_name_from_frame(frame):
     height, width = frame.shape[0], frame.shape[1]
 
     # reduce the frame size
-    # initial width crop to compensate for padding
     frame = frame[int(0.85 * height):, :int(0.5 * width)]
 
     # prepare the frame
@@ -73,4 +71,4 @@ def extract_name_from_frame(frame):
     # convert the image to string using pytesseract
     s = pytesseract.image_to_string(t2).strip()
 
-    return s.translate(translation)
+    return s.translate(translation) or "default user: "

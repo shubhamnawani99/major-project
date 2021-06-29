@@ -7,7 +7,7 @@ import Levenshtein
 
 # Buffer class to store all the attribute of users
 class Buffer:
-    def __init__(self, MAX_FRAMES=10):
+    def __init__(self, MAX_FRAMES=7):
         self.MAX_FRAMES = MAX_FRAMES
         self.lip_distances = defaultdict(partial(deque, maxlen=MAX_FRAMES))
         self.orientation_vectors = defaultdict(partial(deque, maxlen=MAX_FRAMES))

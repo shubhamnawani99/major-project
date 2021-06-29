@@ -1,17 +1,10 @@
 from collections import defaultdict
-from enum import Enum
 
 import numpy as np
 
+# fix attention mappings tomorrow
 
-# the different attention class values
-class AttentionClass(Enum):
-    UNKNOWN = 0
-    DROWSY = 1
-    INATTENTIVE = 2
-    ATTENTIVE = 3
-    INTERACTIVE = 4
-
+attention_list = ["UNKNOWN", "DROWSY", "INATTENTIVE", "ATTENTIVE", "INTERACTIVE"]
 
 # MAX QUEUE SIZE IS 7
 # Threshold values
@@ -22,17 +15,17 @@ EYE_THRESHOLD = 3
 
 # module to classify the person
 def classify(buffer):
-    classes = defaultdict(lambda: AttentionClass.UNKNOWN)
+    classes = defaultdict(lambda: attention_list[0])
     scores = defaultdict(lambda: 0)
 
     # the people in the current frame
-    print(buffer.this_frame_people)
+    # print(buffer.this_frame_people)
 
     # classification for all names in the current buffer frame
     for name in buffer.this_frame_people:
 
         if sum(buffer.presences[name]) < len(buffer.presences[name]) / 2:
-            classes[name] = AttentionClass.UNKNOWN
+            classes[name] = attention_list[0]
             scores[name] = -1
             continue
 
@@ -50,7 +43,7 @@ def classify(buffer):
         if mean_orientation_score >= 0.7:
 
             if sum_eyes_open <= EYE_THRESHOLD:
-                classes[name] = AttentionClass.INATTENTIVE
+                classes[name] = attention_list[2]
                 print("{} : INATTENTIVE".format(name))
 
             else:
@@ -59,30 +52,31 @@ def classify(buffer):
                 # mean_var high range 200, since any value more than
                 # this would indicate the complete face is not in frame
                 if 200 > mean_var > 90 or sum_nods >= NOD_THRESHOLD:
-                    classes[name] = AttentionClass.INTERACTIVE
+                    classes[name] = attention_list[4]
                     print("{} : INTERACTIVE".format(name))
 
                 # a person is ATTENTIVE if they have a high mean orientation score
                 else:
-                    classes[name] = AttentionClass.ATTENTIVE
+                    classes[name] = attention_list[3]
                     print("{} : ATTENTIVE".format(name))
 
         else:
             # a person is DROWSY if they have yawns more than the threshold
             # or if there eye is closed for a certain duration
             if sum_yawns > YAWN_THRESHOLD or sum_eyes_open <= EYE_THRESHOLD or mean_var < 20:
-                classes[name] = AttentionClass.DROWSY
+                classes[name] = attention_list[1]
                 print("{} : DROWSY".format(name))
 
             else:
-                classes[name] = AttentionClass.INATTENTIVE
+                classes[name] = attention_list[2]
                 print("{} : INATTENTIVE".format(name))
 
         var_bin = (mean_var > 100)
-        nod_bin = (sum(buffer.nods[name]) >= NOD_THRESHOLD)
-        yawn_bin = (sum(buffer.yawns[name]) >= YAWN_THRESHOLD)
-
-        scores[name] = (var_bin * 0.5 + mean_orientation_score * 1 + nod_bin * 0.5 - yawn_bin * 2 + 2) * 25
+        nod_bin = (sum_nods >= NOD_THRESHOLD)
+        yawn_bin = (sum_yawns >= YAWN_THRESHOLD)
+        eyes_bin = (sum_eyes_open >= EYE_THRESHOLD)
+        scores[name] = (var_bin * 0.5 + mean_orientation_score * 1
+                        + nod_bin * 0.5 + eyes_bin * 0.5 - yawn_bin * 2 + 1) * 25
 
         # add the attention score and class to the person buffer
         buffer.add_attention_score(name, scores[name])
@@ -92,7 +86,7 @@ def classify(buffer):
         for name in buffer.all_people:
             if name not in buffer.this_frame_people:
                 if sum(buffer.presences[name]) < len(buffer.presences[name]) / 2:
-                    classes[name] = AttentionClass.UNKNOWN
+                    classes[name] = attention_list[0]
                     scores[name] = -1
                     continue
                 else:
