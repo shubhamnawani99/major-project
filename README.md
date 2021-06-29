@@ -20,3 +20,19 @@ detector.
 
 The video is processed frame by frame, the frame is cropped, chopped and then processed to compute the attention scores
 and classes
+
+## How to run?
+
+Open cmd in where your venv is installed
+
+Activate the venv
+>venv\Scripts\activate
+
+Navigate to modules directory where the "flask-app.py" is located
+>cd change\location\to\the\directory\modules\where\flask-app.py
+
+set the app to run
+>set FLASK_APP = flask-app
+
+run the app
+>run flask
