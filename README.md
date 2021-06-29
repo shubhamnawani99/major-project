@@ -35,4 +35,4 @@ set the app to run
 >set FLASK_APP = flask-app
 
 run the app
->run flask
+>flask run
