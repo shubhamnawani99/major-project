@@ -10,6 +10,7 @@ import { ParticipantService } from './participant.service';
 
 export class AppComponent implements OnInit {
   participants: Participant[] = []
+  classes = ["INTERACTIVE", "ATTENTIVE", "INATTENTIVE", "DROWSY"]
   constructor(private pservice: ParticipantService) { }
 
   ngOnInit(): void {
